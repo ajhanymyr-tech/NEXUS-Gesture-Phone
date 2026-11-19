@@ -1,7 +1,6 @@
 
 package com.nexus.gesturephone
 
-import android.app.Activity
 import android.os.Bundle
 import android.Manifest
 import android.content.pm.PackageManager
@@ -12,13 +11,14 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 
+import androidx.activity.ComponentActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 
-class MainActivity : Activity() {
+class MainActivity : ComponentActivity() {
 
     private lateinit var previewView: PreviewView
     private lateinit var status: TextView
@@ -140,7 +140,8 @@ class MainActivity : Activity() {
         cameraProviderFuture.addListener({
 
             try {
-                cameraProvider = cameraProviderFuture.get()
+                val provider = cameraProviderFuture.get()
+                cameraProvider = provider
 
                 val preview = Preview.Builder()
                     .build()
@@ -153,10 +154,10 @@ class MainActivity : Activity() {
                 val cameraSelector =
                     CameraSelector.DEFAULT_FRONT_CAMERA
 
-                cameraProvider?.unbindAll()
+                provider.unbindAll()
 
-                cameraProvider?.bindToLifecycle(
-                    this,
+                provider.bindToLifecycle(
+                    this@MainActivity,
                     cameraSelector,
                     preview
                 )
@@ -170,12 +171,11 @@ class MainActivity : Activity() {
 
             } catch (e: Exception) {
 
-                status.text = "خطا در راه‌اندازی دوربین"
+                status.text = "خطا در راه‌اندازی دوربین: ${e.message}"
                 status.setTextColor(Color.RED)
 
                 isCameraRunning = false
                 cameraButton.text = "تلاش مجدد"
-
             }
 
         }, ContextCompat.getMainExecutor(this))
