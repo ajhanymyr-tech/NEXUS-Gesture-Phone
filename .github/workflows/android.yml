@@ -39,6 +39,30 @@ jobs:
             "platforms;android-35" \
             "build-tools;35.0.0"
 
+      - name: Diagnose Android Manifest
+        run: |
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+
+          path = "app/src/main/AndroidManifest.xml"
+
+          print("Checking:", path)
+
+          try:
+              tree = ET.parse(path)
+              root = tree.getroot()
+              print("XML STATUS: VALID")
+              print("ROOT TAG:", root.tag)
+          except Exception as error:
+              print("XML STATUS: INVALID")
+              print("ERROR:", repr(error))
+              raise
+
+          PY
+
+          echo "----- MANIFEST CONTENT -----"
+          cat -A app/src/main/AndroidManifest.xml
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
