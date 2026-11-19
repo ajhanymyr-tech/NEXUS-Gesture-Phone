@@ -33,4 +33,7 @@ dependencies {
     implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
     implementation("androidx.camera:camera-view:$cameraxVersion")
     implementation("androidx.activity:activity:1.10.1")
+
+    // MediaPipe Hand Landmarker
+    implementation("com.google.mediapipe:tasks-vision:0.10.14")
 }
