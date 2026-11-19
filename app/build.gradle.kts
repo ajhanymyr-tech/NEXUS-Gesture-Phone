@@ -25,3 +25,11 @@ android {
         jvmTarget = "17"
     }
 }
+
+dependencies {
+    val cameraxVersion = "1.7.0"
+
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion")
+}
